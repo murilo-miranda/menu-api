@@ -5,13 +5,20 @@ require 'rails_helper'
 describe "Menus", type: :request do
   context "POST /create" do
     context "with params" do
+      let(:expected_response) {
+        {
+          id: Menu.last.id,
+          title: Menu.last.title
+        }
+      }
+
       it "should return created menu with status 201" do
         post '/v1/menus', params: {
           title: "Burguers"
         }
         
         expect(response.status).to eq(201)
-        expect(response.body).to eq(Menu.last.to_json)
+        expect(response.body).to eq(expected_response.to_json)
       end
     end
 
