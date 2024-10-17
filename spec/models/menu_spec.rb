@@ -5,13 +5,13 @@ require 'rails_helper'
 describe Menu, type: :model do
   context "with parameters" do
     it "creates menu" do
-      expect{Menu.create(title: "Burguers")}.to change{Menu.count}.by 1
+      expect{Menu.create!(title: "Burguers")}.to change{Menu.count}.by 1
     end
   end
 
   context "without parameters" do
     it "do not creates menu" do
-      expect{Menu.create()}.to raise_error(ActiveRecord::NotNullViolation)
+      expect{Menu.create!()}.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end
