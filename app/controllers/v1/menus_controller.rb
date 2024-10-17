@@ -1,7 +1,7 @@
 class V1::MenusController < ApplicationController
   def create
     begin
-      menu = Menu.create!(menu_params)
+      menu = MenuService::Creator.new(menu_params).execute
       render json: json_response(menu), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
