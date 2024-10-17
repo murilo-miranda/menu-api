@@ -16,7 +16,7 @@ describe "Menus", type: :request do
         post '/v1/menus', params: {
           title: "Burguers"
         }
-        
+
         expect(response.status).to eq(201)
         expect(response.body).to eq(expected_response.to_json)
       end
@@ -25,7 +25,7 @@ describe "Menus", type: :request do
     context "without params" do
       it "should return error message with status 422 " do
         post '/v1/menus'
-        
+
         expect(response.status).to eq(422)
         expect(response.body).to eq("Validation failed: Title can't be blank")
       end

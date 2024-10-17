@@ -15,6 +15,6 @@ class V1::MenusController < ApplicationController
     end
 
     def json_response(menu)
-      menu.attributes.except('created_at', 'updated_at').to_json
+      menu.attributes.except("created_at", "updated_at").to_json
     end
 end
