@@ -8,10 +8,19 @@ class V1::MenusController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      MenuService::Destroyer.new(menu_params).execute
+      render json: {}, status: :no_content
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    end
+  end
+
   private
 
     def menu_params
-      params.permit(:title)
+      params.permit(:id, :title)
     end
 
     def json_response(menu)
