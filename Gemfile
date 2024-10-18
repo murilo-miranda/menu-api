@@ -57,4 +57,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "shoulda-matchers", "~> 6.0"
+  
+  # `require` can be set to `true` safely without too much side effect
+  # (except having additional modules & classes defined which could be wasting memory).
+  # But there is no point requiring it unless in test
+  # Also maybe add it inside a "group"
+  gem 'rspec-json_matchers', require: false
 end

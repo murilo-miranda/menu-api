@@ -17,6 +17,17 @@ class V1::MenusController < ApplicationController
     end
   end
 
+  def update
+    begin
+      menu = MenuService::Editor.new(menu_params).execute
+      render json: json_response(menu), status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    rescue ActiveRecord::RecordInvalid => e
+      render json: e.message, status: :unprocessable_entity
+    end
+  end
+
   private
 
     def menu_params
