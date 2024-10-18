@@ -1,17 +1,8 @@
 class V1::MenuItemsController < ApplicationController
-  def show
-    begin
-      menu_item = MenuItem.find(params[:id])
-      render json: json_response(menu_item), status: :ok
-    rescue ActiveRecord::RecordNotFound => e
-      render json: e.message, status: :not_found
-    end
-  end
-
   def create
     begin
-      menu_item = MenuItemService::Creator.new(menu_items_params).execute
-      render json: json_response(menu_item), status: :created
+      menu = MenuItemService::Creator.new(menu_items_params).execute
+      render json: json_response(menu), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
     end
