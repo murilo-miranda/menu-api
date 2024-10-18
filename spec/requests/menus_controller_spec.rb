@@ -123,7 +123,7 @@ describe "Menus", type: :request do
     end
 
     context "without existed id" do
-      it "should return empty body with status 404" do
+      it "should return error message with status 404" do
         get "/v1/menus/999999"
 
         expect(response.status).to eq(404)
