@@ -14,6 +14,6 @@ Rails.application.routes.draw do
 
   namespace :v1 do
     resources :menus, only: [ :show, :create, :destroy, :update ]
-    resources :menu_items, only: [ :create ]
+    resources :menu_items, only: [ :create, :destroy ]
   end
 end
