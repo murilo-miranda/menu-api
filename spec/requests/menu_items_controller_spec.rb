@@ -69,4 +69,44 @@ describe "MenuItems", type: :request do
       end
     end
   end
+
+  context "GET /v1/menu_items/:id" do
+    let!(:menu) { Menu.create(title: 'Burguers') }
+    let!(:menu_item) {
+      MenuItem.create(
+        name: 'Big Mac',
+        description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+        price: 5.69,
+        menu_id: menu.id
+      )
+    }
+
+    context "with existed id" do
+      let(:expected_response) {
+        {
+          id: menu_item.id,
+          name: menu_item.name,
+          description: menu_item.description,
+          price: menu_item.price,
+          menu_id: menu.id
+        }
+      }
+
+      it "should return the menu item record with status 200" do
+        get "/v1/menu_items/#{menu_item.id}"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to eq(expected_response.to_json)
+      end
+    end
+
+    context "with non existed id" do
+      it "should return error message with status 404" do
+        get "/v1/menu_items/999999"
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find MenuItem with 'id'=999999")
+      end
+    end
+  end
 end
