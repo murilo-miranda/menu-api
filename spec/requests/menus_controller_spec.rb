@@ -55,4 +55,51 @@ describe "Menus", type: :request do
       end
     end
   end
+
+  context "PUT /v1/menus/:id" do
+    context "with existed id" do
+      context "with required attribute" do
+        let!(:menu) { Menu.create(title: 'Burguers') }
+        let(:expected_response) {
+          {
+            id: menu.id,
+            title: menu.reload.title
+          }
+        }
+        
+        it "should return the record with new value with status 200" do
+          put "/v1/menus/#{menu.id}", params: {
+            title: "Pasta"
+          }
+          
+          expect(response.status).to eq(200)
+          expect(response.body).to be_json.with_content(expected_response)
+        end
+      end
+
+      context "without required attribute" do
+        let!(:menu) { Menu.create(title: 'Burguers') }
+        
+        it "should return the record with new value with status 422" do
+          put "/v1/menus/#{menu.id}"
+          
+          expect(response.status).to eq(422)
+          expect(response.body).to eq("Validation failed: Title can't be blank")
+        end
+      end
+    end
+
+    context "without existed id" do
+      let!(:menu) { Menu.create(title: 'Burguers') }
+      
+      it "should return error message with status 404" do
+        put "/v1/menus/999999", params: {
+          title: "Pasta"
+        }
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find Menu with 'id'=999999")
+      end
+    end
+  end
 end

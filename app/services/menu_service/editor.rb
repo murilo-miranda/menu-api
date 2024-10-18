@@ -1,11 +1,12 @@
 class MenuService::Editor
   def initialize(params)
-    @id = params.fetch(:id)
-    @title = params.fetch(:title)
+    @id = params[:id]
+    @title = params[:title]
   end
 
   def execute
     menu = Menu.find(@id)
     menu.update!(title: @title)
+    menu
   end
 end
