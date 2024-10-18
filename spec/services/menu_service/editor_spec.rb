@@ -9,14 +9,14 @@ describe MenuService::Editor do
     context "existed record" do
       context "with required params" do
         subject { described_class.new(params).execute }
-        
+
         let(:params) {
           {
             id: menu.id,
             title: "Pasta"
           }
         }
-        
+
         it "updates informed menu" do
           subject
           expect(menu.reload.id).to eq(params.fetch(:id))
@@ -26,15 +26,15 @@ describe MenuService::Editor do
 
       context "without required title params" do
         subject { described_class.new(params).execute }
-        
+
         let(:params) {
           {
-            id: menu.id,
+            id: menu.id
           }
         }
-        
+
         it "do not updates informed menu" do
-          expect{ subject }.to raise_error(ActiveRecord::RecordInvalid)
+          expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
           expect(menu.reload.id).to eq(params.fetch(:id))
           expect(menu.reload.title).to eq("Burguers")
         end
@@ -50,9 +50,9 @@ describe MenuService::Editor do
           title: "Pasta"
         }
       }
-      
+
       it "updates informed menu" do
-        expect{ subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
         expect(menu.reload.title).to eq("Burguers")
       end
     end
