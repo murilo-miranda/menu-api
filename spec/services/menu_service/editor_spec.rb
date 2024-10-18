@@ -7,19 +7,37 @@ describe MenuService::Editor do
     let!(:menu) { Menu.create(title: "Burguers") }
 
     context "existed record" do
-      subject { described_class.new(params).execute }
-
-      let(:params) {
-        {
-          id: menu.id,
-          title: "Pasta"
+      context "with required params" do
+        subject { described_class.new(params).execute }
+        
+        let(:params) {
+          {
+            id: menu.id,
+            title: "Pasta"
+          }
         }
-      }
-      
-      it "updates informed menu" do
-        subject
-        expect(menu.reload.id).to eq(params.fetch(:id))
-        expect(menu.reload.title).to eq("Pasta")
+        
+        it "updates informed menu" do
+          subject
+          expect(menu.reload.id).to eq(params.fetch(:id))
+          expect(menu.reload.title).to eq("Pasta")
+        end
+      end
+
+      context "without required title params" do
+        subject { described_class.new(params).execute }
+        
+        let(:params) {
+          {
+            id: menu.id,
+          }
+        }
+        
+        it "do not updates informed menu" do
+          expect{ subject }.to raise_error(ActiveRecord::RecordInvalid)
+          expect(menu.reload.id).to eq(params.fetch(:id))
+          expect(menu.reload.title).to eq("Burguers")
+        end
       end
     end
 
