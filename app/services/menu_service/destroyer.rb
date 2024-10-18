@@ -1,6 +1,6 @@
 class MenuService::Destroyer
   def initialize(params)
-    @id = params.fetch(:id)
+    @id = params[:id]
   end
 
   def execute
