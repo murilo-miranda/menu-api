@@ -17,16 +17,16 @@ describe MenuItemService::Creator do
       }
 
       it "creates a new menu item for menu" do
-        expect{ subject }.to change { MenuItem.count}.by 1
+        expect { subject }.to change { MenuItem.count }.by 1
       end
     end
 
     context "without required attributes" do
       let(:params) { { menu_id: menu.id } }
-      
+
       it "do not creates a new menu item for menu" do
         expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
       end
-    end 
+    end
   end
 end

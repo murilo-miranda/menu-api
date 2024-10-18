@@ -5,7 +5,7 @@ describe MenuItem, type: :model do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:price) }
   end
-  
+
   describe "association" do
     it { should belong_to(:menu) }
   end

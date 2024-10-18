@@ -5,7 +5,7 @@ class MenuItemService::Creator
     @description = params[:description]
     @price = params[:price]
   end
-  
+
   def execute
     MenuItem.create!(
       name: @name,
