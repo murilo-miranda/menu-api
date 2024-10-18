@@ -8,6 +8,15 @@ class V1::MenuItemsController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      MenuItemService::Destroyer.new(menu_items_params).execute
+      render json: {}, status: :no_content
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    end
+  end
+
   private
 
     def menu_items_params
