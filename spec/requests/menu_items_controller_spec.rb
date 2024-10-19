@@ -109,4 +109,75 @@ describe "MenuItems", type: :request do
       end
     end
   end
+
+  context "PUT /v1/menu_items/:id" do
+    context "with existed id" do
+      context "with required attribute" do
+        let!(:menu) { Menu.create(title: 'Burguers') }
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_id: menu.id
+          )
+        }
+
+        let(:expected_response) {
+          {
+            id: menu_item.id,
+            name: 'The Classic',
+            description: 'Buns, patties, chopped onions, ketchup, mustard',
+            price: 2.19.to_s,
+            menu_id: menu.id
+          }
+        }
+
+        it "should return the record with new value with status 200" do
+          put "/v1/menu_items/#{menu_item.id}", params: {
+            name: 'The Classic',
+            description: 'Buns, patties, chopped onions, ketchup, mustard',
+            price: 2.19
+          }
+
+          expect(response.status).to eq(200)
+          expect(response.body).to be_json.with_content(expected_response)
+        end
+      end
+
+      context "without required attribute" do
+        let!(:menu) { Menu.create(title: 'Burguers') }
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_id: menu.id
+          )
+        }
+
+        it "should return error message with status 422" do
+          put "/v1/menu_items/#{menu_item.id}"
+
+          expect(response.status).to eq(422)
+          expect(response.body).to eq("Validation failed: Name can't be blank, Price can't be blank")
+        end
+      end
+    end
+
+    context "without existed id" do
+      let!(:menu) { Menu.create(title: 'Burguers') }
+
+      it "should return error message with status 404" do
+        put "/v1/menu_items/999999", params: {
+          name: 'The Classic',
+          description: 'Buns, patties, chopped onions, ketchup, mustard',
+          price: 2.19
+        }
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find MenuItem with 'id'=999999")
+      end
+    end
+  end
 end
