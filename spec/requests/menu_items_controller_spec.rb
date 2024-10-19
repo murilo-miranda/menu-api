@@ -28,6 +28,42 @@ describe "MenuItems", type: :request do
         expect(response.status).to eq(201)
         expect(response.body).to eq(expected_response.to_json)
       end
+
+      context "with name already used" do
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'The Classic',
+            description: 'Buns, patties, chopped onions, ketchup, mustard',
+            price: 2.19,
+            menu_id: menu.id
+          )
+        }
+        
+        let!(:new_menu_item) {
+          MenuItem.create(
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_id: menu.id
+          )
+        }
+        
+        let(:params) {
+          {
+            name: 'The Classic',
+            description: 'Buns, patties, chopped onions, ketchup, mustard',
+            price: 2.19,
+            menu_id: menu.id
+          }
+        }
+
+        it "should return error message with status 422" do
+          post "/v1/menu_items", params: params
+
+          expect(response.status).to eq(422)
+          expect(response.body).to eq("Validation failed: Name has already been taken")
+        end
+      end
     end
 
     context "without params" do
@@ -142,6 +178,41 @@ describe "MenuItems", type: :request do
 
           expect(response.status).to eq(200)
           expect(response.body).to be_json.with_content(expected_response)
+        end
+
+        context "with name already used" do
+          let!(:menu_item) {
+            MenuItem.create(
+              name: 'The Classic',
+              description: 'Buns, patties, chopped onions, ketchup, mustard',
+              price: 2.19,
+              menu_id: menu.id
+            )
+          }
+          
+          let!(:new_menu_item) {
+            MenuItem.create(
+              name: 'Big Mac',
+              description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+              price: 5.69,
+              menu_id: menu.id
+            )
+          }
+          
+          let(:params) {
+            {
+              name: 'The Classic',
+              description: 'Buns, patties, chopped onions, ketchup, mustard',
+              price: 2.19,
+            }
+          }
+  
+          it "should return error message with status 422" do
+            put "/v1/menu_items/#{new_menu_item.id}", params: params
+
+            expect(response.status).to eq(422)
+            expect(response.body).to eq("Validation failed: Name has already been taken")
+          end
         end
       end
 
