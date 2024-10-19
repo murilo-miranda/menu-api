@@ -13,7 +13,12 @@ describe "MenuItems", type: :request do
           name: MenuItem.last.name,
           description: MenuItem.last.description,
           price: MenuItem.last.price,
-          menu_id: MenuItem.last.menu_id
+          menus: [
+            {
+              id: menu.id,
+              title: menu.title
+            }
+          ]
         }
       }
 
@@ -22,7 +27,7 @@ describe "MenuItems", type: :request do
           name: 'Big Mac',
           description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
           price: 5.69,
-          menu_id: menu.id
+          menu_ids: [ menu.id ]
         }
 
         expect(response.status).to eq(201)
@@ -35,7 +40,7 @@ describe "MenuItems", type: :request do
             name: 'The Classic',
             description: 'Buns, patties, chopped onions, ketchup, mustard',
             price: 2.19,
-            menu_id: menu.id
+            menu_ids: [ menu.id ]
           )
         }
 
@@ -44,7 +49,7 @@ describe "MenuItems", type: :request do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69,
-            menu_id: menu.id
+            menu_ids: [ menu.id ]
           )
         }
 
@@ -53,7 +58,7 @@ describe "MenuItems", type: :request do
             name: 'The Classic',
             description: 'Buns, patties, chopped onions, ketchup, mustard',
             price: 2.19,
-            menu_id: menu.id
+            menu_ids: [ menu.id ]
           }
         }
 
@@ -71,7 +76,7 @@ describe "MenuItems", type: :request do
         post '/v1/menu_items', params: {}
 
         expect(response.status).to eq(422)
-        expect(response.body).to eq("Validation failed: Menu must exist, Name can't be blank, Price can't be blank")
+        expect(response.body).to eq("Validation failed: Name can't be blank, Price can't be blank")
       end
     end
   end

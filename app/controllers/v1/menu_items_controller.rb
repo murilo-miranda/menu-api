@@ -11,7 +11,7 @@ class V1::MenuItemsController < ApplicationController
   def create
     begin
       menu_item = MenuItemService::Creator.new(menu_items_params).execute
-      render json: json_response(menu_item), status: :created
+      render json: json_association_response(menu_item), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
     end
@@ -40,10 +40,17 @@ class V1::MenuItemsController < ApplicationController
   private
 
     def menu_items_params
-      params.permit(:id, :name, :description, :price, :menu_id)
+      params.permit(:id, :name, :description, :price, menu_ids: [])
     end
 
     def json_response(menu)
       menu.attributes.except("created_at", "updated_at").to_json
+    end
+
+    def json_association_response(menu_item)
+      menu_item.as_json(
+        except: [ :created_at, :updated_at ],
+        include: { menus: { except: [ :created_at, :updated_at ] } }
+      )
     end
 end

@@ -14,10 +14,10 @@ describe MenuItemService::Creator do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69,
-            menu_ids: [menu.id]
+            menu_ids: [ menu.id ]
           }
         }
-        
+
         it "creates a new menu item associated with a menu" do
           expect { subject }.to change { MenuItem.count }.by 1
           expect(MenuItem.last.menus).to contain_exactly(menu)
@@ -30,7 +30,7 @@ describe MenuItemService::Creator do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69,
-            menu_ids: [menu.id, menu2.id]
+            menu_ids: [ menu.id, menu2.id ]
           }
         }
 
@@ -46,7 +46,7 @@ describe MenuItemService::Creator do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69,
-            menu_ids: [menu.id]
+            menu_ids: [ menu.id ]
           )
         }
 
@@ -55,7 +55,7 @@ describe MenuItemService::Creator do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69,
-            menu_ids: [menu.id]
+            menu_ids: [ menu.id ]
           }
         }
 
@@ -66,7 +66,7 @@ describe MenuItemService::Creator do
     end
 
     context "without required attributes" do
-      let(:params) { { } }
+      let(:params) { {} }
 
       it "do not creates a new menu item for menu" do
         expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
