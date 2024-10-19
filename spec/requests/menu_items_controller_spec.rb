@@ -112,17 +112,17 @@ describe "MenuItems", type: :request do
 
   context "PUT /v1/menu_items/:id" do
     context "with existed id" do
-      context "with required attribute" do
-        let!(:menu) { Menu.create(title: 'Burguers') }
-        let!(:menu_item) {
-          MenuItem.create(
-            name: 'Big Mac',
-            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
-            price: 5.69,
-            menu_id: menu.id
-          )
-        }
+      let!(:menu) { Menu.create(title: 'Burguers') }
+      let!(:menu_item) {
+        MenuItem.create(
+          name: 'Big Mac',
+          description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+          price: 5.69,
+          menu_id: menu.id
+        )
+      }
 
+      context "with required attribute" do
         let(:expected_response) {
           {
             id: menu_item.id,
@@ -146,16 +146,6 @@ describe "MenuItems", type: :request do
       end
 
       context "without required attribute" do
-        let!(:menu) { Menu.create(title: 'Burguers') }
-        let!(:menu_item) {
-          MenuItem.create(
-            name: 'Big Mac',
-            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
-            price: 5.69,
-            menu_id: menu.id
-          )
-        }
-
         it "should return error message with status 422" do
           put "/v1/menu_items/#{menu_item.id}"
 
@@ -166,8 +156,6 @@ describe "MenuItems", type: :request do
     end
 
     context "without existed id" do
-      let!(:menu) { Menu.create(title: 'Burguers') }
-
       it "should return error message with status 404" do
         put "/v1/menu_items/999999", params: {
           name: 'The Classic',
