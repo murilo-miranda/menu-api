@@ -45,7 +45,7 @@ describe MenuItemService::Editor do
               menu_id: menu.id
             )
           }
-          
+
           let(:params) {
             {
               id: new_menu_item.id,
@@ -55,14 +55,13 @@ describe MenuItemService::Editor do
               menu_id: menu.id
             }
           }
-  
+
           it "do not updates informed menu" do
             expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
             expect(new_menu_item.reload.id).to eq(params.fetch(:id))
             expect(new_menu_item.reload.name).to eq("The Classic")
             expect(new_menu_item.reload.description).to eq("Buns, patties, chopped onions, ketchup, mustard")
             expect(new_menu_item.reload.price).to eq(2.19)
-
           end
         end
       end

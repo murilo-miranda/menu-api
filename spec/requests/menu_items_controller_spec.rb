@@ -38,7 +38,7 @@ describe "MenuItems", type: :request do
             menu_id: menu.id
           )
         }
-        
+
         let!(:new_menu_item) {
           MenuItem.create(
             name: 'Big Mac',
@@ -47,7 +47,7 @@ describe "MenuItems", type: :request do
             menu_id: menu.id
           )
         }
-        
+
         let(:params) {
           {
             name: 'The Classic',
@@ -189,7 +189,7 @@ describe "MenuItems", type: :request do
               menu_id: menu.id
             )
           }
-          
+
           let!(:new_menu_item) {
             MenuItem.create(
               name: 'Big Mac',
@@ -198,15 +198,15 @@ describe "MenuItems", type: :request do
               menu_id: menu.id
             )
           }
-          
+
           let(:params) {
             {
               name: 'The Classic',
               description: 'Buns, patties, chopped onions, ketchup, mustard',
-              price: 2.19,
+              price: 2.19
             }
           }
-  
+
           it "should return error message with status 422" do
             put "/v1/menu_items/#{new_menu_item.id}", params: params
 
