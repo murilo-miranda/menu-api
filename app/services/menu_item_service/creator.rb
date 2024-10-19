@@ -1,9 +1,9 @@
 class MenuItemService::Creator
   def initialize(params)
-    @menu_id = params[:menu_id]
     @name = params[:name]
     @description = params[:description]
     @price = params[:price]
+    @menu_ids = params[:menu_ids]
   end
 
   def execute
@@ -11,7 +11,7 @@ class MenuItemService::Creator
       name: @name,
       description: @description,
       price: @price,
-      menu_id: @menu_id
+      menu_ids: @menu_ids
     )
   end
 end
