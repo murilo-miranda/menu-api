@@ -35,6 +35,36 @@ describe MenuItemService::Editor do
           expect(menu_item.reload.description).to eq("Buns, patties, chopped onions, ketchup, mustard")
           expect(menu_item.reload.price).to eq(2.19)
         end
+
+        context "with name already used" do
+          let!(:new_menu_item) {
+            MenuItem.create(
+              name: 'The Classic',
+              description: 'Buns, patties, chopped onions, ketchup, mustard',
+              price: 2.19,
+              menu_id: menu.id
+            )
+          }
+          
+          let(:params) {
+            {
+              id: new_menu_item.id,
+              name: 'Big Mac',
+              description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+              price: 5.69,
+              menu_id: menu.id
+            }
+          }
+  
+          it "do not updates informed menu" do
+            expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
+            expect(new_menu_item.reload.id).to eq(params.fetch(:id))
+            expect(new_menu_item.reload.name).to eq("The Classic")
+            expect(new_menu_item.reload.description).to eq("Buns, patties, chopped onions, ketchup, mustard")
+            expect(new_menu_item.reload.price).to eq(2.19)
+
+          end
+        end
       end
 
       context "without required params" do
