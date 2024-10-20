@@ -131,4 +131,73 @@ describe "Menus", type: :request do
       end
     end
   end
+
+  context "GET /v1/menus" do
+    let!(:menu) { Menu.create(title: "Burguers") }
+    let!(:menu2) { Menu.create(title: "Lunch") }
+
+    context "without menu item" do
+      let(:expected_response) {
+        [
+          {
+            id: menu.id,
+            title: menu.title,
+            menu_items: []
+          },
+          {
+            id: menu2.id,
+            title: menu2.title,
+            menu_items: []
+          }
+        ]
+      }
+
+      it "should return menu collection with status 200" do
+        get "/v1/menus"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to eq (expected_response.to_json)
+      end
+    end
+
+    context "with menu item" do
+      let!(:menu_item) {
+        MenuItem.create(
+          name: 'The Classic',
+          description: 'Buns, patties, chopped onions, ketchup, mustard',
+          price: 2.19,
+          menu_ids: [ menu.id ]
+        )
+      }
+
+      let(:expected_response) {
+        [
+          {
+            id: menu.id,
+            title: menu.title,
+            menu_items: [
+              {
+                id: menu_item.id,
+                name: menu_item.name,
+                description: menu_item.description,
+                price: menu_item.price
+              }
+            ]
+          },
+          {
+            id: menu2.id,
+            title: menu2.title,
+            menu_items: []
+          }
+        ]
+      }
+
+      it "should return menu collection with menu items and status 200" do
+        get "/v1/menus"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to eq (expected_response.to_json)
+      end
+    end
+  end
 end

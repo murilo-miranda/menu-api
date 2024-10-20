@@ -1,4 +1,9 @@
 class V1::MenusController < ApplicationController
+  def index
+    menus = Menu.all
+    render json: json_association_response(menus), status: :ok
+  end
+
   def show
     begin
       menu = Menu.find(params[:id])
@@ -45,5 +50,12 @@ class V1::MenusController < ApplicationController
 
     def json_response(menu)
       menu.attributes.except("created_at", "updated_at").to_json
+    end
+
+    def json_association_response(menu)
+      menu.as_json(
+        except: [ :created_at, :updated_at ],
+        include: { menu_items: { except: [ :created_at, :updated_at ] } }
+      )
     end
 end
