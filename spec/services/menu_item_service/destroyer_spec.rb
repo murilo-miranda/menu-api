@@ -12,7 +12,7 @@ describe MenuItemService::Destroyer do
         name: 'Big Mac',
         description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
         price: 5.69,
-        menu_ids: [menu.id]
+        menu_ids: [ menu.id ]
       )
     }
 

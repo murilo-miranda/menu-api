@@ -88,7 +88,7 @@ describe "MenuItems", type: :request do
         name: 'Big Mac',
         description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
         price: 5.69,
-        menu_ids: [menu.id]
+        menu_ids: [ menu.id ]
       )
     }
 
@@ -118,7 +118,7 @@ describe "MenuItems", type: :request do
         name: 'Big Mac',
         description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
         price: 5.69,
-        menu_ids: [menu.id]
+        menu_ids: [ menu.id ]
       )
     }
 
@@ -129,10 +129,10 @@ describe "MenuItems", type: :request do
           name: menu_item.name,
           description: menu_item.description,
           price: menu_item.price,
-          menus: [{
+          menus: [ {
             id: menu.id,
             title: menu.title
-          }]
+          } ]
         }
       }
 
@@ -162,7 +162,7 @@ describe "MenuItems", type: :request do
           name: 'Big Mac',
           description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
           price: 5.69,
-          menu_ids: [menu.id]
+          menu_ids: [ menu.id ]
         )
       }
 
@@ -173,10 +173,10 @@ describe "MenuItems", type: :request do
             name: 'The Classic',
             description: 'Buns, patties, chopped onions, ketchup, mustard',
             price: 2.19.to_s,
-            menus: [{
+            menus: [ {
               id: menu.id,
               title: menu.title
-            }]
+            } ]
           }
         }
 
@@ -197,7 +197,7 @@ describe "MenuItems", type: :request do
               name: 'The Classic',
               description: 'Buns, patties, chopped onions, ketchup, mustard',
               price: 2.19,
-              menu_ids: [menu.id]
+              menu_ids: [ menu.id ]
             )
           }
 
@@ -206,7 +206,7 @@ describe "MenuItems", type: :request do
               name: 'Big Mac',
               description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
               price: 5.69,
-              menu_ids: [menu.id]
+              menu_ids: [ menu.id ]
             )
           }
 
@@ -234,10 +234,10 @@ describe "MenuItems", type: :request do
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
             price: 5.69.to_s,
-            menus: [{
+            menus: [ {
               id: menu.id,
               title: menu.title
-            }]
+            } ]
           }
         }
 

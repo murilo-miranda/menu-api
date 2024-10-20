@@ -85,7 +85,7 @@ describe MenuItemService::Editor do
               name: 'New name'
             }
           }
-          
+
           it "only updates the name of informed menu item" do
             subject
             expect(menu_item.reload.id).to eq(params.fetch(:id))
@@ -103,7 +103,7 @@ describe MenuItemService::Editor do
               description: new_description
             }
           }
-          
+
           it "only updates the description of informed menu item" do
             subject
             expect(menu_item.reload.id).to eq(params.fetch(:id))
@@ -121,7 +121,7 @@ describe MenuItemService::Editor do
               price: new_price
             }
           }
-          
+
           it "only updates the price of informed menu item" do
             subject
             expect(menu_item.reload.id).to eq(params.fetch(:id))
@@ -139,7 +139,7 @@ describe MenuItemService::Editor do
               menu_ids: new_menu_ids
             }
           }
-          
+
           it "only updates the menu_ids of informed menu item" do
             subject
             expect(menu_item.reload.id).to eq(params.fetch(:id))
