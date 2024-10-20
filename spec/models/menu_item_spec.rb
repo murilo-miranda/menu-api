@@ -6,11 +6,11 @@ describe MenuItem, type: :model do
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:price) }
-    subject { MenuItem.new(name: 'Big Mac', price: 5.69, menu_id: menu.id) }
+    subject { MenuItem.new(name: 'Big Mac', price: 5.69) }
     it { should validate_uniqueness_of(:name) }
   end
 
   describe "association" do
-    it { should belong_to(:menu) }
+    it { should have_many(:menus) }
   end
 end
