@@ -2,7 +2,7 @@ class V1::MenuItemsController < ApplicationController
   def show
     begin
       menu_item = MenuItem.find(params[:id])
-      render json: json_response(menu_item), status: :ok
+      render json: json_association_response(menu_item), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     end
@@ -29,7 +29,7 @@ class V1::MenuItemsController < ApplicationController
   def update
     begin
       menu_item = MenuItemService::Editor.new(menu_items_params).execute
-      render json: json_response(menu_item), status: :ok
+      render json: json_association_response(menu_item), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     rescue ActiveRecord::RecordInvalid => e
