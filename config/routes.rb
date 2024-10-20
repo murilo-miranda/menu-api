@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   namespace :v1 do
-    resources :menus, only: [ :show, :create, :destroy, :update ]
+    resources :menus, only: [ :index, :show, :create, :destroy, :update ]
     resources :menu_items, only: [ :show, :create, :destroy, :update ]
   end
 end
