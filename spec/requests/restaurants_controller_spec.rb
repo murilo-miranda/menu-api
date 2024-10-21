@@ -6,7 +6,8 @@ describe "Restaurants", type: :request do
       let(:expected_response) {
         {
           id: Restaurant.last.id,
-          name: Restaurant.last.name
+          name: Restaurant.last.name,
+          menus: []
         }
       }
 
@@ -126,6 +127,67 @@ describe "Restaurants", type: :request do
 
         expect(response.status).to eq(404)
         expect(response.body).to eq("Couldn't find Restaurant with 'id'=999999")
+      end
+    end
+  end
+
+  context "GET /v1/restaurants" do
+    context "without menus" do
+      let!(:restaurant) { Restaurant.create(name: "Mc Donalds") }
+      let!(:restaurant2) { Restaurant.create(name: "Burguer King") }
+      let(:expected_response) {
+        [
+          {
+            id: restaurant.id,
+            name: restaurant.name,
+            menus: []
+          },
+          {
+            id: restaurant2.id,
+            name: restaurant2.name,
+            menus: []
+          }
+        ]
+      }
+
+      it "should return restaurant collection with status 200" do
+        get "/v1/restaurants"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to eq (expected_response.to_json)
+      end
+    end
+
+    context "with menus" do
+      let!(:restaurant) { Restaurant.create(name: "Mc Donalds", menu_ids: [ menu.id ]) }
+      let!(:restaurant2) { Restaurant.create(name: "Burguer King") }
+      let!(:menu) { Menu.create(title: 'Burguers') }
+
+      let(:expected_response) {
+        [
+          {
+            id: restaurant.id,
+            name: restaurant.name,
+            menus: [
+              {
+                id: menu.id,
+                title: menu.title
+              }
+            ]
+          },
+          {
+            id: restaurant2.id,
+            name: restaurant2.name,
+            menus: []
+          }
+        ]
+      }
+
+      it "should return restaurant collection with menus and status 200" do
+        get "/v1/restaurants"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to eq (expected_response.to_json)
       end
     end
   end
