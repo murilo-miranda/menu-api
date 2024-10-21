@@ -7,7 +7,7 @@ class V1::MenusController < ApplicationController
   def show
     begin
       menu = Menu.find(params[:id])
-      render json: json_response(menu), status: :ok
+      render json: json_association_response(menu), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     end

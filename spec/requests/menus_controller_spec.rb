@@ -158,18 +158,59 @@ describe "Menus", type: :request do
     let!(:menu) { Menu.create(title: 'Burguers') }
 
     context "with existed id" do
-      let(:expected_response) {
-        {
-          id: menu.id,
-          title: menu.title
+      context "without restaurant/menu item" do
+        let(:expected_response) {
+          {
+            id: menu.id,
+            title: menu.title,
+            menu_items: [],
+            restaurants: []
+          }
         }
-      }
 
-      it "should return the menu record with status 200" do
-        get "/v1/menus/#{menu.id}"
+        it "should return the menu record with association and status 200" do
+          get "/v1/menus/#{menu.id}"
 
-        expect(response.status).to eq(200)
-        expect(response.body).to be_json.with_content(expected_response)
+          expect(response.status).to eq(200)
+          expect(response.body).to be_json.with_content(expected_response)
+        end
+      end
+
+      context "with restaurant/menu item" do
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'The Classic',
+            description: 'Buns, patties, chopped onions, ketchup, mustard',
+            price: 2.19,
+            menu_ids: [ menu.id ]
+          )
+        }
+        let!(:restaurant) { Restaurant.create(name: 'Mc Donalds', menu_ids: [ menu.id ]) }
+        let(:expected_response) {
+          {
+            id: menu.id,
+            title: menu.title,
+            menu_items: [
+              {
+                id: menu_item.id,
+                name: menu_item.name,
+                description: menu_item.description,
+                price: menu_item.price
+              }
+            ],
+            restaurants: [
+              id: restaurant.id,
+              name: restaurant.name
+            ]
+          }
+        }
+
+        it "should return the menu record with association and status 200" do
+          get "/v1/menus/#{menu.id}"
+
+          expect(response.status).to eq(200)
+          expect(response.body).to eq(expected_response.to_json)
+        end
       end
     end
 
