@@ -136,14 +136,21 @@ describe "Restaurants", type: :request do
         end
       end
 
-      context "without required attribute" do
+      context "without params" do
         let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+        let(:expected_response) {
+          {
+            id: restaurant.id,
+            name: restaurant.name,
+            menus: []
+          }
+        }
 
-        it "should return the record with new value with status 422" do
+        it "should return specified restaurant with status 200" do
           put "/v1/restaurants/#{restaurant.id}"
 
-          expect(response.status).to eq(422)
-          expect(response.body).to eq("Validation failed: Name can't be blank")
+          expect(response.status).to eq(200)
+          expect(response.body).to eq(expected_response.to_json)
         end
       end
     end
