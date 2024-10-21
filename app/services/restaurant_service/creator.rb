@@ -1,9 +1,9 @@
 class RestaurantService::Creator
   def initialize(params)
-    @name = params[:name]
+    @params = params
   end
 
   def execute
-    Restaurant.create!(name: @name)
+    Restaurant.create!(@params)
   end
 end

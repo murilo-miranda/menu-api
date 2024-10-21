@@ -45,7 +45,7 @@ class V1::RestaurantsController < ApplicationController
   private
 
     def restaurant_params
-      params.permit(:id, :name)
+      params.permit(:id, :name, menu_ids: [])
     end
 
     def json_association_response(restaurant)
