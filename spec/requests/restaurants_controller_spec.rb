@@ -82,4 +82,51 @@ describe "Restaurants", type: :request do
       end
     end
   end
+
+  context "PUT /v1/restaurants/:id" do
+    context "with existed id" do
+      context "with required attribute" do
+        let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+        let(:expected_response) {
+          {
+            id: restaurant.id,
+            name: restaurant.reload.name
+          }
+        }
+
+        it "should return the record with new value with status 200" do
+          put "/v1/restaurants/#{restaurant.id}", params: {
+            name: "Burguer King"
+          }
+
+          expect(response.status).to eq(200)
+          expect(response.body).to be_json.with_content(expected_response)
+        end
+      end
+
+      context "without required attribute" do
+        let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+
+        it "should return the record with new value with status 422" do
+          put "/v1/restaurants/#{restaurant.id}"
+
+          expect(response.status).to eq(422)
+          expect(response.body).to eq("Validation failed: Name can't be blank")
+        end
+      end
+    end
+
+    context "without existed id" do
+      let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+
+      it "should return error message with status 404" do
+        put "/v1/restaurants/999999", params: {
+          name: "Burguer King"
+        }
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find Restaurant with 'id'=999999")
+      end
+    end
+  end
 end
