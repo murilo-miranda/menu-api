@@ -9,5 +9,6 @@ describe Menu, type: :model do
 
   describe "associations" do
     it { is_expected.to have_many(:menu_items) }
+    it { is_expected.to have_many(:restaurants) }
   end
 end
