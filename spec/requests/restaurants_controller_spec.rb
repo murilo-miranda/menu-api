@@ -50,6 +50,22 @@ describe "Restaurants", type: :request do
           expect(response.body).to eq(expected_response.to_json)
         end
       end
+
+      context "and with non existed menu association" do
+        let!(:menu) { Menu.create(title: "Burguers") }
+
+        let(:expected_response) { "Couldn't find Menu with 'id'=[999999]" }
+
+        it "should return error message with status 404" do
+          post '/v1/restaurants', params: {
+            name: "Mc Donalds",
+            menu_ids: [ 999_999 ]
+          }
+
+          expect(response.status).to eq(404)
+          expect(response.body).to eq(expected_response)
+        end
+      end
     end
 
     context "without required attribute" do

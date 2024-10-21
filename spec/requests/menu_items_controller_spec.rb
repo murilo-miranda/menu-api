@@ -85,6 +85,23 @@ describe "MenuItems", type: :request do
           expect(response.body).to eq("Validation failed: Name has already been taken")
         end
       end
+
+      context "and with non existed menu association" do
+        let!(:menu) { Menu.create(title: "Burguers") }
+        let(:expected_response) { "Couldn't find Menu with 'id'=[999999]" }
+
+        it "should return created menu with menu item association and status 201" do
+          post '/v1/menu_items', params: {
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_ids: [ 999_999 ]
+          }
+
+          expect(response.status).to eq(404)
+          expect(response.body).to eq(expected_response)
+        end
+      end
     end
 
     context "without required params" do

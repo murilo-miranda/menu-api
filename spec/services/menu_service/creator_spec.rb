@@ -25,5 +25,19 @@ describe MenuService::Creator do
         expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
+
+    context "with non existed restaurant/menu_item" do
+      let(:params) {
+        {
+          title: 'Burguers',
+          menu_item_ids: [ 999_999 ],
+          restaurant_ids: [ 999_999 ]
+        }
+      }
+
+      it "do not creates a new menu item" do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end

@@ -81,6 +81,23 @@ describe "Menus", type: :request do
         expect(response.body).to eq("Validation failed: Title can't be blank")
       end
     end
+
+    context "and with non existed restaurant/menu item association" do
+      let(:expected_response) { "Couldn't find MenuItem with 'id'=[999999]" }
+
+      it "should return error message with status 404" do
+        post '/v1/menus', params: {
+          name: 'Big Mac',
+          description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+          price: 5.69,
+          restaurant_ids: [ 999_999 ],
+          menu_item_ids: [ 999_999 ]
+        }
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq(expected_response)
+      end
+    end
   end
 
   context "DELETE /v1/menus/:id" do

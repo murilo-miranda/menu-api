@@ -25,5 +25,18 @@ describe RestaurantService::Creator do
         expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
+
+    context "non existed association" do
+      let(:params) {
+        {
+          name: 'Mc Donalds',
+          menu_ids: [ 999_999 ]
+        }
+      }
+
+      it "do not creates a new restaurant" do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end
