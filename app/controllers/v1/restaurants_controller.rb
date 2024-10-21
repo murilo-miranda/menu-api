@@ -26,6 +26,17 @@ class V1::RestaurantsController < ApplicationController
     end
   end
 
+  def update
+    begin
+      restaurant = RestaurantService::Editor.new(restaurant_params).execute
+      render json: json_response(restaurant), status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    rescue ActiveRecord::RecordInvalid => e
+      render json: e.message, status: :unprocessable_entity
+    end
+  end
+
   private
 
     def restaurant_params
