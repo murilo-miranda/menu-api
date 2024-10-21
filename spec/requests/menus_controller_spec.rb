@@ -4,25 +4,67 @@ require 'rails_helper'
 
 describe "Menus", type: :request do
   context "POST v1/menus" do
-    context "with params" do
-      let(:expected_response) {
-        {
-          id: Menu.last.id,
-          title: Menu.last.title
+    context "with required attributes" do
+      context "and with menu item association" do
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69
+          )
         }
-      }
-
-      it "should return created menu with status 201" do
-        post '/v1/menus', params: {
-          title: "Burguers"
+        let(:expected_response) {
+          {
+            id: Menu.last.id,
+            title: Menu.last.title,
+            menu_items: [
+              {
+                id: menu_item.id,
+                name: menu_item.name,
+                description: menu_item.description,
+                price: menu_item.price
+              }
+            ]
+          }
         }
 
-        expect(response.status).to eq(201)
-        expect(response.body).to eq(expected_response.to_json)
+        it "should return created menu with menu item association and status 201" do
+          post '/v1/menus', params: {
+            title: "Burguers",
+            menu_item_ids: [ menu_item.id ]
+          }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
+      end
+
+      context "and without menu item association" do
+        let!(:menu_item) {
+          MenuItem.create(
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69
+          )
+        }
+        let(:expected_response) {
+          {
+            id: Menu.last.id,
+            title: Menu.last.title,
+            menu_items: []
+          }
+        }
+
+        it "should return created menu with menu item association and status 201" do
+          post '/v1/menus', params: { title: "Burguers" }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
       end
     end
 
-    context "without params" do
+    context "without required attributes" do
       it "should return error message with status 422 " do
         post '/v1/menus'
 

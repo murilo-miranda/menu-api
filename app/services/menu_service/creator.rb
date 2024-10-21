@@ -1,9 +1,9 @@
 class MenuService::Creator
   def initialize(params)
-    @title = params[:title]
+    @params = params
   end
 
   def execute
-    Menu.create!(title: @title)
+    Menu.create!(@params)
   end
 end
