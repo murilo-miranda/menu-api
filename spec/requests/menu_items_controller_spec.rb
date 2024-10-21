@@ -6,32 +6,58 @@ describe "MenuItems", type: :request do
   context "POST v1/menu_items" do
     let!(:menu) { Menu.create(title: 'Burguers') }
 
-    context "with params" do
-      let(:expected_response) {
-        {
-          id: MenuItem.last.id,
-          name: MenuItem.last.name,
-          description: MenuItem.last.description,
-          price: MenuItem.last.price,
-          menus: [
-            {
-              id: menu.id,
-              title: menu.title
-            }
-          ]
-        }
-      }
-
-      it "should return created menu item with status 201" do
-        post '/v1/menu_items', params: {
-          name: 'Big Mac',
-          description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
-          price: 5.69,
-          menu_ids: [ menu.id ]
+    context "with required attributes" do
+      context "and without menu association" do
+        let(:expected_response) {
+          {
+            id: MenuItem.last.id,
+            name: MenuItem.last.name,
+            description: MenuItem.last.description,
+            price: MenuItem.last.price,
+            menus: []
+          }
         }
 
-        expect(response.status).to eq(201)
-        expect(response.body).to eq(expected_response.to_json)
+        it "should return created menu item with status 201" do
+          post '/v1/menu_items', params: {
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69
+          }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
+      end
+
+      context "and with menu association" do
+        let!(:menu) { Menu.create(title: "Burguers") }
+        let(:expected_response) {
+          {
+            id: MenuItem.last.id,
+            name: MenuItem.last.name,
+            description: MenuItem.last.description,
+            price: MenuItem.last.price,
+            menus: [
+              {
+                id: menu.id,
+                title: menu.title
+              }
+            ]
+          }
+        }
+
+        it "should return created menu with menu item association and status 201" do
+          post '/v1/menu_items', params: {
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_ids: [ menu.id ]
+          }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
       end
 
       context "with name already used" do
@@ -43,19 +69,9 @@ describe "MenuItems", type: :request do
             menu_ids: [ menu.id ]
           )
         }
-
-        let!(:new_menu_item) {
-          MenuItem.create(
-            name: 'Big Mac',
-            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
-            price: 5.69,
-            menu_ids: [ menu.id ]
-          )
-        }
-
         let(:params) {
           {
-            name: 'The Classic',
+            name: menu_item.name,
             description: 'Buns, patties, chopped onions, ketchup, mustard',
             price: 2.19,
             menu_ids: [ menu.id ]
@@ -71,7 +87,7 @@ describe "MenuItems", type: :request do
       end
     end
 
-    context "without params" do
+    context "without required params" do
       it "should return error message with status 422 " do
         post '/v1/menu_items', params: {}
 
