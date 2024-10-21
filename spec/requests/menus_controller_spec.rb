@@ -187,18 +187,20 @@ describe "Menus", type: :request do
     let!(:menu) { Menu.create(title: "Burguers") }
     let!(:menu2) { Menu.create(title: "Lunch") }
 
-    context "without menu item" do
+    context "without restaurant/menu item" do
       let(:expected_response) {
         [
           {
             id: menu.id,
             title: menu.title,
-            menu_items: []
+            menu_items: [],
+            restaurants: []
           },
           {
             id: menu2.id,
             title: menu2.title,
-            menu_items: []
+            menu_items: [],
+            restaurants: []
           }
         ]
       }
@@ -211,7 +213,7 @@ describe "Menus", type: :request do
       end
     end
 
-    context "with menu item" do
+    context "with restaurant/menu item" do
       let!(:menu_item) {
         MenuItem.create(
           name: 'The Classic',
@@ -220,6 +222,7 @@ describe "Menus", type: :request do
           menu_ids: [ menu.id ]
         )
       }
+      let!(:restaurant) { Restaurant.create(name: 'Mc Donalds', menu_ids: [ menu.id ]) }
 
       let(:expected_response) {
         [
@@ -233,12 +236,19 @@ describe "Menus", type: :request do
                 description: menu_item.description,
                 price: menu_item.price
               }
+            ],
+            restaurants: [
+              {
+                id: restaurant.id,
+                name: restaurant.name
+              }
             ]
           },
           {
             id: menu2.id,
             title: menu2.title,
-            menu_items: []
+            menu_items: [],
+            restaurants: []
           }
         ]
       }
