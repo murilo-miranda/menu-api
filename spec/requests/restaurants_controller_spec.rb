@@ -2,26 +2,57 @@ require 'rails_helper'
 
 describe "Restaurants", type: :request do
   context "POST /v1/restaurants" do
-    context "with params" do
-      let(:expected_response) {
-        {
-          id: Restaurant.last.id,
-          name: Restaurant.last.name,
-          menus: []
-        }
-      }
+    context "with required attribute" do
+      context "and with menu association" do
+        let!(:menu) { Menu.create(title: "Burguers") }
 
-      it "should return created restaurants with status 201" do
-        post '/v1/restaurants', params: {
-          name: "Mc Donalds"
+        let(:expected_response) {
+          {
+            id: Restaurant.last.id,
+            name: Restaurant.last.name,
+            menus: [
+              {
+                id: menu.id,
+                title: menu.title
+              }
+            ]
+          }
         }
 
-        expect(response.status).to eq(201)
-        expect(response.body).to eq(expected_response.to_json)
+        it "should return created restaurants with menu association and status 201" do
+          post '/v1/restaurants', params: {
+            name: "Mc Donalds",
+            menu_ids: [ menu.id ]
+          }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
+      end
+
+      context "and without menu association" do
+        let!(:menu) { Menu.create(title: "Burguers") }
+
+        let(:expected_response) {
+          {
+            id: Restaurant.last.id,
+            name: Restaurant.last.name,
+            menus: []
+          }
+        }
+
+        it "should return created restaurants with menu association and status 201" do
+          post '/v1/restaurants', params: {
+            name: "Mc Donalds"
+          }
+
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
+        end
       end
     end
 
-    context "without params" do
+    context "without required attribute" do
       it "should return error message with status 422 " do
         post '/v1/restaurants'
 

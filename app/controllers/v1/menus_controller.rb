@@ -7,7 +7,7 @@ class V1::MenusController < ApplicationController
   def show
     begin
       menu = Menu.find(params[:id])
-      render json: json_response(menu), status: :ok
+      render json: json_association_response(menu), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     end
@@ -16,7 +16,7 @@ class V1::MenusController < ApplicationController
   def create
     begin
       menu = MenuService::Creator.new(menu_params).execute
-      render json: json_response(menu), status: :created
+      render json: json_association_response(menu), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
     end
@@ -45,7 +45,7 @@ class V1::MenusController < ApplicationController
   private
 
     def menu_params
-      params.permit(:id, :title)
+      params.permit(:id, :title, menu_item_ids: [], restaurant_ids: [])
     end
 
     def json_response(menu)
@@ -55,7 +55,10 @@ class V1::MenusController < ApplicationController
     def json_association_response(menu)
       menu.as_json(
         except: [ :created_at, :updated_at ],
-        include: { menu_items: { except: [ :created_at, :updated_at ] } }
+        include: {
+          menu_items: { except: [ :created_at, :updated_at ] },
+          restaurants: { except: [ :created_at, :updated_at ] }
+        }
       )
     end
 end
