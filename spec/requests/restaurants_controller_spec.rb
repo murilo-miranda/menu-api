@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "Restaurants", type: :request do
-  context "POST v1/restaurants" do
+  context "POST /v1/restaurants" do
     context "with params" do
       let(:expected_response) {
         {
@@ -26,6 +26,30 @@ describe "Restaurants", type: :request do
 
         expect(response.status).to eq(422)
         expect(response.body).to eq("Validation failed: Name can't be blank")
+      end
+    end
+  end
+
+  context "DELETE /v1/restaurants/:id" do
+    context "with existed id" do
+      let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+
+      it "should return empty body with status 204" do
+        delete "/v1/restaurants/#{restaurant.id}"
+
+        expect(response.status).to eq(204)
+        expect(response.body).to eq("")
+      end
+    end
+
+    context "with non existed id" do
+      let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+
+      it "should return empty body with status 204" do
+        delete "/v1/restaurants/999999"
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find Restaurant with 'id'=999999")
       end
     end
   end

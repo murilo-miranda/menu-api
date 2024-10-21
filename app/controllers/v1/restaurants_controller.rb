@@ -8,6 +8,15 @@ class V1::RestaurantsController < ApplicationController
     end
   end
 
+  def destroy
+    begin
+      RestaurantService::Destroyer.new(restaurant_params).execute
+      render json: {}, status: :no_content
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    end
+  end
+
   private
 
     def restaurant_params
