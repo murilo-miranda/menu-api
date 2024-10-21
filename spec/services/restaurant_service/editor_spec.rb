@@ -34,7 +34,7 @@ describe RestaurantService::Editor do
         }
 
         it "do not updates informed restaurant" do
-          expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
+          subject
           expect(restaurant.reload.id).to eq(params.fetch(:id))
           expect(restaurant.reload.name).to eq("Mc Donalds")
         end

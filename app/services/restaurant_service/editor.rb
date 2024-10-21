@@ -1,12 +1,11 @@
 class RestaurantService::Editor
   def initialize(params)
-    @id = params[:id]
-    @name = params[:name]
+    @params = params
   end
 
   def execute
-    restaurant = Restaurant.find(@id)
-    restaurant.update!(name: @name)
+    restaurant = Restaurant.find(@params[:id])
+    restaurant.update!(@params)
     restaurant
   end
 end
