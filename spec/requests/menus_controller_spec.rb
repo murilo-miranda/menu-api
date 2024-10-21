@@ -5,7 +5,7 @@ require 'rails_helper'
 describe "Menus", type: :request do
   context "POST v1/menus" do
     context "with required attributes" do
-      context "and with menu item association" do
+      context "and with restaurant/menu item association" do
         let!(:menu_item) {
           MenuItem.create(
             name: 'Big Mac',
@@ -13,6 +13,7 @@ describe "Menus", type: :request do
             price: 5.69
           )
         }
+        let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
         let(:expected_response) {
           {
             id: Menu.last.id,
@@ -24,6 +25,12 @@ describe "Menus", type: :request do
                 description: menu_item.description,
                 price: menu_item.price
               }
+            ],
+            restaurants: [
+              {
+                id: restaurant.id,
+                name: restaurant.name
+              }
             ]
           }
         }
@@ -31,7 +38,8 @@ describe "Menus", type: :request do
         it "should return created menu with menu item association and status 201" do
           post '/v1/menus', params: {
             title: "Burguers",
-            menu_item_ids: [ menu_item.id ]
+            menu_item_ids: [ menu_item.id ],
+            restaurant_ids: [ restaurant.id ]
           }
 
           expect(response.status).to eq(201)
@@ -39,7 +47,7 @@ describe "Menus", type: :request do
         end
       end
 
-      context "and without menu item association" do
+      context "and without restaurant/menu item association" do
         let!(:menu_item) {
           MenuItem.create(
             name: 'Big Mac',
@@ -51,7 +59,8 @@ describe "Menus", type: :request do
           {
             id: Menu.last.id,
             title: Menu.last.title,
-            menu_items: []
+            menu_items: [],
+            restaurants: []
           }
         }
 

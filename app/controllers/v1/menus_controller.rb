@@ -45,7 +45,7 @@ class V1::MenusController < ApplicationController
   private
 
     def menu_params
-      params.permit(:id, :title, menu_item_ids: [])
+      params.permit(:id, :title, menu_item_ids: [], restaurant_ids: [])
     end
 
     def json_response(menu)
@@ -55,7 +55,10 @@ class V1::MenusController < ApplicationController
     def json_association_response(menu)
       menu.as_json(
         except: [ :created_at, :updated_at ],
-        include: { menu_items: { except: [ :created_at, :updated_at ] } }
+        include: {
+          menu_items: { except: [ :created_at, :updated_at ] },
+          restaurants: { except: [ :created_at, :updated_at ] }
+        }
       )
     end
 end
