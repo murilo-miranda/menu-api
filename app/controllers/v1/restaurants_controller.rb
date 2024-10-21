@@ -10,6 +10,8 @@ class V1::RestaurantsController < ApplicationController
       render json: json_association_response(restaurant), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
     end
   end
 

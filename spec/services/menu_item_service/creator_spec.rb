@@ -63,6 +63,21 @@ describe MenuItemService::Creator do
           expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
+
+      context "with non existed menu" do
+        let(:params) {
+          {
+            name: 'Big Mac',
+            description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
+            price: 5.69,
+            menu_ids: [ 999_999 ]
+          }
+        }
+
+        it "do not creates a new menu item" do
+          expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
     end
 
     context "without required attributes" do
