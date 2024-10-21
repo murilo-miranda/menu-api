@@ -1,8 +1,13 @@
 class V1::RestaurantsController < ApplicationController
+  def index
+    restaurants = Restaurant.all
+    render json: json_association_response(restaurants), status: :ok
+  end
+
   def create
     begin
       restaurant = RestaurantService::Creator.new(restaurant_params).execute
-      render json: json_response(restaurant), status: :created
+      render json: json_association_response(restaurant), status: :created
     rescue ActiveRecord::RecordInvalid => e
       render json: e.message, status: :unprocessable_entity
     end
@@ -20,7 +25,7 @@ class V1::RestaurantsController < ApplicationController
   def show
     begin
       restaurant = Restaurant.find(params[:id])
-      render json: json_response(restaurant), status: :ok
+      render json: json_association_response(restaurant), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     end
@@ -29,7 +34,7 @@ class V1::RestaurantsController < ApplicationController
   def update
     begin
       restaurant = RestaurantService::Editor.new(restaurant_params).execute
-      render json: json_response(restaurant), status: :ok
+      render json: json_association_response(restaurant), status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render json: e.message, status: :not_found
     rescue ActiveRecord::RecordInvalid => e
@@ -43,7 +48,10 @@ class V1::RestaurantsController < ApplicationController
       params.permit(:id, :name)
     end
 
-    def json_response(restaurant)
-      restaurant.as_json(except: [ :created_at, :updated_at ])
+    def json_association_response(restaurant)
+      restaurant.as_json(
+        except: [ :created_at, :updated_at ],
+        include: { menus: { except: [ :created_at, :updated_at ] } }
+      )
     end
 end
