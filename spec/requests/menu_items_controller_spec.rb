@@ -90,7 +90,7 @@ describe "MenuItems", type: :request do
         let!(:menu) { Menu.create(title: "Burguers") }
         let(:expected_response) { "Couldn't find Menu with 'id'=[999999]" }
 
-        it "should return created menu with menu item association and status 201" do
+        it "should error message and status 404" do
           post '/v1/menu_items', params: {
             name: 'Big Mac',
             description: 'Buns, patties, cheese, lettuce pickles, onions, sauce, paprika',
