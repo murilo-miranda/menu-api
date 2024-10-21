@@ -17,6 +17,15 @@ class V1::RestaurantsController < ApplicationController
     end
   end
 
+  def show
+    begin
+      restaurant = Restaurant.find(params[:id])
+      render json: json_response(restaurant), status: :ok
+    rescue ActiveRecord::RecordNotFound => e
+      render json: e.message, status: :not_found
+    end
+  end
+
   private
 
     def restaurant_params

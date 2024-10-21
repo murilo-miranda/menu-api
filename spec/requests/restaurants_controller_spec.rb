@@ -53,4 +53,33 @@ describe "Restaurants", type: :request do
       end
     end
   end
+
+  context "GET /v1/restaurants/:id" do
+    let!(:restaurant) { Restaurant.create(name: 'Mc Donalds') }
+
+    context "with existed id" do
+      let(:expected_response) {
+        {
+          id: restaurant.id,
+          name: restaurant.name
+        }
+      }
+
+      it "should return the restaurant record with status 200" do
+        get "/v1/restaurants/#{restaurant.id}"
+
+        expect(response.status).to eq(200)
+        expect(response.body).to be_json.with_content(expected_response)
+      end
+    end
+
+    context "without existed id" do
+      it "should return error message with status 404" do
+        get "/v1/restaurants/999999"
+
+        expect(response.status).to eq(404)
+        expect(response.body).to eq("Couldn't find Restaurant with 'id'=999999")
+      end
+    end
+  end
 end
