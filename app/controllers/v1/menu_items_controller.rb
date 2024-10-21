@@ -1,4 +1,9 @@
 class V1::MenuItemsController < ApplicationController
+  def index
+    menu_items = MenuItem.all
+    render json: json_association_response(menu_items), status: :ok
+  end
+
   def show
     begin
       menu_item = MenuItem.find(params[:id])
