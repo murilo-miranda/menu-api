@@ -50,6 +50,18 @@ rspec
 
 ## API
 
+* **POST /v1/import**: Creates new data.
+
+201
+```json
+{ message: "Import successful" }
+```
+
+422
+```json
+{ error: "Invalid JSON data" }
+```
+
 * **POST /v1/restaurants**: Creates a new restaurant.
 
 201
