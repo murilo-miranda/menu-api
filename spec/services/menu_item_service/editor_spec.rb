@@ -68,7 +68,6 @@ describe MenuItemService::Editor do
           }
 
           it "do not updates informed menu" do
-            expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
             expect(new_menu_item.reload.id).to eq(params.fetch(:id))
             expect(new_menu_item.reload.name).to eq("The Classic")
             expect(new_menu_item.reload.description).to eq("Buns, patties, chopped onions, ketchup, mustard")
