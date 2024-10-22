@@ -30,16 +30,10 @@ DB_DEV_NAME=database_for_development_name
 DB_TEST_NAME=database_for_test_name
 ```
 
-4. Install the dependencies:
+3. Run docker:
 
 ```
-bundle install
-```
-
-5. Start the project:
-
-```
-rails s
+docker compose up
 ```
 
 ## Test
