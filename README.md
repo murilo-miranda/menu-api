@@ -20,7 +20,7 @@ To install the project you need the following:
 
 1. Create database:
 
-Will need to create menu_api_development and menu_api_test with psql
+Will need to create dev database your_database_name_for_dev and test your_database_name_for_test with psql
 
 2. Clone the repository:
 
@@ -28,13 +28,24 @@ Will need to create menu_api_development and menu_api_test with psql
 git clone https://github.com/username/project.git
 ```
 
-3. Install the dependencies:
+3. Create .env file in root with content:
+
+```
+DB_USERNAME=user_created_previously
+DB_PASSWORD=password_created_previously
+DB_DEV_NAME=your_database_name_for_dev
+DB_TEST_NAME=your_database_name_for_test
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+4. Install the dependencies:
 
 ```
 bundle install
 ```
 
-4. Start the project:
+5. Start the project:
 
 ```
 rails s
