@@ -17,6 +17,6 @@ Rails.application.routes.draw do
     resources :menu_items, only: [ :index, :show, :create, :destroy, :update ]
     resources :restaurants, only: [ :index, :create, :destroy, :show, :update ]
 
-    post '/import', to: 'import#create'
+    post "/import", to: "import#create"
   end
 end

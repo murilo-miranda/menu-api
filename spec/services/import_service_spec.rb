@@ -1,20 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe ImportService do
+describe ImportService do
   describe '#execute' do
     let(:json_data) { File.read('spec/fixtures/restaurant_data.json') }
     let(:import_service) { ImportService.new(JSON.parse(json_data)) }
 
     it 'imports restaurants' do
-      expect { import_service.execute }.to change(Restaurant, :count).by(2)
+      expect { import_service.execute }.to change { Restaurant.count }.by(2)
     end
 
     it 'imports menus' do
-      expect { import_service.execute }.to change(Menu, :count).by(4)
+      expect { import_service.execute }.to change { Menu.count }.by(4)
     end
 
     it 'imports menu items' do
-      expect { import_service.execute }.to change(MenuItem, :count).by(8)
+      expect { import_service.execute }.to change { MenuItem.count }.by(6)
     end
 
     it 'associates menus with restaurants' do

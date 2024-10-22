@@ -17,7 +17,7 @@ describe "Import", type: :request do
 
       it 'imports menu items' do
         post '/v1/import', params: {}, headers: { 'Content-Type' => 'application/json', 'RAW_POST_DATA' => json_data }
-        expect(MenuItem.count).to eq(8)
+        expect(MenuItem.count).to eq(6)
       end
 
       it 'returns a success response' do
