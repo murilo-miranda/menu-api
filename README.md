@@ -1,27 +1,314 @@
-# README
+# menu-api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The project provides a RESTful API for manage restaurant, menu and menu items.
 
-Things you may want to cover:
+## Table of Contents
 
-* Ruby version
+- [Installation](#installation)
+- [API](#api)
+- [Test](#test)
+- [Rake](#rake)
 
-* System dependencies
 
-* Configuration
+## Installation
+To install the project you need the following:
 
-* Database creation
+- Ruby 3.2.3
+- Rails 7.2.1.1
+- psql (PostgreSQL) 16.4
+- npm 10.8.2?
 
-* Database initialization
+1. Create database:
 
-* How to run the test suite
+Will need to create menu_api_development and menu_api_test with psql
 
-* Services (job queues, cache servers, search engines, etc.)
+2. Clone the repository:
 
-* Deployment instructions
+```
+git clone https://github.com/username/project.git
+```
 
-* Running the ImportService
+3. Install the dependencies:
+
+```
+bundle install
+```
+
+4. Start the project:
+
+```
+rails s
+```
+
+## Test
+
+Run the command:
+
+```
+rspec
+```
+
+## API
+
+* **POST /v1/restaurants**: Creates a new restaurant.
+
+201
+```json
+{
+  id: 1,
+  name: "Mc Donalds",
+  menus: []
+}
+```
+
+422
+```json
+{ "Validation failed: Name can't be blank" }
+```
+
+* **GET /v1/restaurants**: Retrieves a list of all restaurants.
+
+```json
+[
+  {
+    id: 1,
+    name: "Mc Donalds",
+    menus: [
+      {
+        id: 1,
+        title: "Burguers"
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Burguer King",
+    menus: [
+      {
+        id: 1,
+        title: "Burguers"
+      }
+    ]
+  }
+]
+```
+
+* **GET /v1/restaurants/:id**: Retrieves a specific restaurant.
+
+200
+```json
+{
+  id: 1,
+  name: "Mc Donalds",
+  menus: []
+}
+```
+
+404
+```json
+{ "Couldn't find Restaurant with 'id'=999999" }
+```
+
+* **PUT /v1/restaurants/:id**: Updates a specific restaurant.
+
+200
+```json
+{
+  id: 1,
+  name: "Mc Donalds",
+  menus: []
+}
+```
+
+404
+```json
+{ "Couldn't find Restaurant with 'id'=999999" }
+```
+
+* **DELETE /v1/restaurants/:id**: Deletes a specific restaurant.
+
+204
+```json
+{}
+```
+
+404
+```json
+{ "Couldn't find Restaurant with 'id'=999999" }
+```
+
+* **POST v1/menus**: Creates a new menu.
+
+201
+```json
+{
+  id: 1,
+  title: "Burguers",
+  menu_items: [],
+  restaurants: []
+}
+```
+
+422
+```json
+{ "Validation failed: Title can't be blank" }
+```
+
+* **GET v1/menus**: Retrieves a list of all menus.
+
+200
+```json
+[
+  {
+    id: 1,
+    title: "Burguers",
+    menu_items: [],
+    restaurants: []
+  },
+  {
+    id: 2,
+    title: "Lunch",
+    menu_items: [],
+    restaurants: []
+  }
+]
+```
+
+* **GET v1/menus/:id**: Retrieves a specific menu.
+
+200
+```json
+{
+  id: 1,
+  title: "Burguers",
+  menu_items: [],
+  restaurants: []
+}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+* **PUT v1/menus/:id**: Updates a specific menu.
+
+200
+```json
+{
+  id: 1,
+  title: "Burguers",
+  menu_items: [],
+  restaurants: []
+}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+* **DELETE v1/menus/:id**: Deletes a specific menu.
+
+204
+```json
+{}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+* **POST v1/menu_items**: Creates a new menu item.
+
+201
+```json
+{
+  id: 1,
+  name: "Big Mac",
+  description: "Buns, patties, cheese, lettuce pickles, onions, sauce, paprika",
+  price: 5.69,
+  menus: []
+}
+```
+
+422
+```json
+{ "Validation failed: Name can't be blank" }
+```
+
+* **GET v1/menu_items**: Retrieves a list of all menus items.
+
+200
+```json
+[
+  {
+    id: 1,
+    name: "Big Mac",
+    description: "Buns, patties, cheese, lettuce pickles, onions, sauce paprika",
+    price: 5.69,
+    menus: []
+  },
+  {
+    id: 2,
+    name: "The Classic",
+    description: "Buns, patties, chopped onions, ketchup, mustard",
+    price: 2.19,
+    menus: []
+  }
+]
+```
+
+* **GET v1/menu_items/:id**: Retrieves a specific menu item.
+
+200
+```json
+{
+  id: 1,
+  name: "Big Mac",
+  description: "Buns, patties, cheese, lettuce pickles, onions, sauce, paprika",
+  price: 5.69,
+  menus: []
+}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+* **PUT v1/menu_items/:id**: Updates a specific menu item.
+
+200
+```json
+{
+  id: 1,
+  name: "Big Mac",
+  description: "Buns, patties, cheese, lettuce pickles, onions, sauce, paprika",
+  price: 5.69,
+  menus: []
+}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+* **DELETE v1/menu_items/:id**: Deletes a specific menu.
+
+204
+```json
+{}
+```
+
+404
+```json
+{ "Couldn't find Menu with 'id'=999999" }
+```
+
+## Rake
 
 To run the ImportService with a JSON file, follow these steps:
 

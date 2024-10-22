@@ -93,7 +93,7 @@ describe "MenuItems", type: :request do
           }
         }
 
-        it "should return error message with status 201" do
+        it "should return created menu message with status 201" do
           post "/v1/menu_items", params: params
 
           expect(response.status).to eq(201)
