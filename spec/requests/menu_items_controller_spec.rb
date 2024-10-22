@@ -78,11 +78,26 @@ describe "MenuItems", type: :request do
           }
         }
 
-        it "should return error message with status 422" do
+        let(:expected_response) {
+          {
+            id: MenuItem.last.id,
+            name: MenuItem.last.name,
+            description: MenuItem.last.description,
+            price: MenuItem.last.price,
+            menus: [
+              {
+                id: menu.id,
+                title: menu.title
+              }
+            ]
+          }
+        }
+
+        it "should return error message with status 201" do
           post "/v1/menu_items", params: params
 
-          expect(response.status).to eq(422)
-          expect(response.body).to eq("Validation failed: Name has already been taken")
+          expect(response.status).to eq(201)
+          expect(response.body).to eq(expected_response.to_json)
         end
       end
 
@@ -251,11 +266,24 @@ describe "MenuItems", type: :request do
             }
           }
 
+          let(:expected_response) {
+            {
+              id: new_menu_item.id,
+              name: 'The Classic',
+              description: 'Buns, patties, chopped onions, ketchup, mustard',
+              price: 2.19.to_s,
+              menus: [ {
+                id: menu.id,
+                title: menu.title
+              } ]
+            }
+          }
+
           it "should return error message with status 422" do
             put "/v1/menu_items/#{new_menu_item.id}", params: params
 
-            expect(response.status).to eq(422)
-            expect(response.body).to eq("Validation failed: Name has already been taken")
+            expect(response.status).to eq(200)
+            expect(response.body).to eq(expected_response.to_json)
           end
         end
       end

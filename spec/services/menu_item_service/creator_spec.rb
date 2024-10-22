@@ -59,8 +59,8 @@ describe MenuItemService::Creator do
           }
         }
 
-        it "do not creates a new menu item for menu" do
-          expect { subject }.to raise_error(ActiveRecord::RecordInvalid)
+        it "creates a new menu item for menu" do
+          expect { subject }.to change { MenuItem.count }.by 1
         end
       end
 

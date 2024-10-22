@@ -14,7 +14,7 @@ describe ImportService do
     end
 
     it 'imports menu items' do
-      expect { import_service.execute }.to change { MenuItem.count }.by(6)
+      expect { import_service.execute }.to change { MenuItem.count }.by(9)
     end
 
     it 'associates menus with restaurants' do
