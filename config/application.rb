@@ -2,6 +2,7 @@ require_relative "boot"
 
 require "rails/all"
 
+require 'erb'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -24,5 +25,13 @@ module MenuApi
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    env_file = File.join(Rails.root, '.env')
+    if File.exist?(env_file)
+      File.foreach(env_file) do |line|
+        key, value = line.split('=', 2)
+        ENV[key.strip] = value.strip
+      end
+    end
   end
 end

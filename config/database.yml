@@ -22,10 +22,10 @@ default: &default
 
 development:
   <<: *default
-  url: postgresql://localhost/menu_api_development?pool=5
-  database: menu_api_development
-  username: menuapi
-  password: menuapi123
+  url: <%= "postgresql://localhost/#{ENV['DB_DEV_NAME']}?pool=5" %>
+  database: <%= ENV['DB_DEV_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -59,10 +59,10 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  url: postgresql://localhost/menu_api_test?pool=5
-  database: menu_api_test
-  username: menuapi
-  password: menuapi123
+  url: <%= "postgresql://localhost/#{ENV['DB_TEST_NAME']}?pool=5" %>
+  database: <%= ENV['DB_TEST_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
