@@ -10,33 +10,24 @@ The project provides a RESTful API for manage restaurant, menu and menu items.
 - [Rake](#rake)
 
 
-## Installation
-To install the project you need the following:
+## Run project
+To run the project you need the following:
 
-- Ruby 3.2.3
-- Rails 7.2.1.1
-- psql (PostgreSQL) 16.4
-- npm 10.8.2?
+- Docker && Docker Compose
 
-1. Create database:
-
-Will need to create dev database your_database_name_for_dev and test your_database_name_for_test with psql
-
-2. Clone the repository:
+1. Clone the repository:
 
 ```
 git clone https://github.com/username/project.git
 ```
 
-3. Create .env file in root with content:
+2. Create .env file in root with content:
 
 ```
-DB_USERNAME=user_created_previously
-DB_PASSWORD=password_created_previously
-DB_DEV_NAME=your_database_name_for_dev
-DB_TEST_NAME=your_database_name_for_test
-DB_HOST=localhost
-DB_PORT=5432
+DB_USERNAME=menuapi
+DB_PASSWORD=menuapi123
+DB_DEV_NAME=database_for_development_name
+DB_TEST_NAME=database_for_test_name
 ```
 
 4. Install the dependencies:
