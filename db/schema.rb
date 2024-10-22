@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_21_021057) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_22_202222) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,7 +20,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_21_021057) do
     t.decimal "price", precision: 8, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_menu_items_on_name", unique: true
   end
 
   create_table "menu_items_menus", force: :cascade do |t|
