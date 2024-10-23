@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  postgres_database:
+    container_name: menu_api_postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./pgdata:/data/postgres_database
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - menu-api-network
+  
+  api:
+    container_name: menu-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bin/setup && rails s -b 0.0.0.0"
+    env_file:
+      - .env
+    volumes:
+      - .:/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres_database
+    networks:
+      - menu-api-network
+
+volumes:
+  pgdata:
+    driver: local
+    
+networks:
+  menu-api-network:
