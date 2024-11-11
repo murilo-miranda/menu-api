@@ -65,4 +65,5 @@ group :test do
   # But there is no point requiring it unless in test
   # Also maybe add it inside a "group"
   gem "rspec-json_matchers", require: false
+  gem "rspec-sidekiq"
 end
