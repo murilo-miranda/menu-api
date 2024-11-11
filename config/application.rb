@@ -33,5 +33,7 @@ module MenuApi
         ENV[key.strip] = value.strip
       end
     end
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end
