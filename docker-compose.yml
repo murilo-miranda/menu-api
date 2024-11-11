@@ -31,9 +31,21 @@ services:
       - "3000:3000"
     depends_on:
       - postgres_database
+      - redis
     networks:
       - menu-api-network
 
+  redis:
+    container_name: redis
+    image: redis
+    command: redis-server
+    volumes:
+      - ./tmp/redis_data:/var/lib/redis/data
+    ports:
+      - "6379:6379"
+    networks:
+      - menu-api-network
+      
 volumes:
   pgdata:
     driver: local

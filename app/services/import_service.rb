@@ -39,6 +39,8 @@ class ImportService
         end
       end
     end
+
+    logger.info "Finished"
   end
 
   private
